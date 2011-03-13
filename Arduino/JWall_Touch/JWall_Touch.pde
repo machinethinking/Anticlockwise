@@ -36,6 +36,24 @@ int currBlue;
 
 int messageCount = 0;
 
+typedef struct {
+    byte wall;       // left most wall segment (0)
+    byte location;   // top (1) or bottom (0)
+    byte order;      // leftmost (0)
+    byte bias;       // percentage (100 normal)
+    byte channel;    // channel on LED slave 
+    byte red;
+    byte green;
+    byte blue;
+    } led_strip ;
+
+led_strip strip[4] = { { 0,1,0,100,32,0,0,0 },
+                       { 0,1,1,100,31,0,0,0 },
+                       { 0,1,2,100,30,0,0,0 },
+                       { 0,0,0,100,1,0,0,0 }
+
+};
+
 void setup() {
 
   // setup/run the fast spi library
@@ -58,6 +76,9 @@ void setup() {
    Firmata.setFirmwareVersion(0, 1);
    Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
    Firmata.begin();
+    
+
+
 
 }
 
@@ -82,8 +103,10 @@ void runPattern(int patternID) {
          FadeLED(1, 32, 100, 0, 31, 0, 31, 0, 0);
          FadeLED(1, 32, 100, 31, 0, 0, 0, 0, 31);
          FadeLED(1, 32, 100, 0, 0, 31, 0, 31, 0);
-      
          break;
+        case PatternTypeCycle:
+            channel_cycle();
+            break;
    }
 }
 
@@ -162,5 +185,19 @@ void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int bl
       show();
       delay(fadedelay);
    }
+}
+
+void channel_cycle()
+{   
+    Serial.begin(9600);
+    for(int i=0; i < NUM_LEDS; i++) {
+        setAllChannelsToColor(0);
+        show();
+        unsigned int color = adjustedColor(255,255,255);
+        Serial.println(i);
+        Display[i] = color;
+        show();
+        delay(2000);
+    }
 }
 

@@ -2,5 +2,6 @@
 
 typedef enum PatternType {
    PatternTypeAnalog,
-   PatternTypeFade
+   PatternTypeFade,
+    PatternTypeCycle
 } PatternType;
