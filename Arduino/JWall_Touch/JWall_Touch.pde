@@ -23,10 +23,12 @@
 #import "JWall.h"
 
 #define NUM_LEDS 32
+#define CEREAL 1
 
 unsigned int Display[NUM_LEDS];  
 byte analogPin;
-PatternType currPatternType = PatternTypeFade;
+PatternType currPatternType = PatternTypeTopBottomFade;
+//PatternType currPatternType = PatternTypeCycle;
 
 unsigned int currColor;
 
@@ -38,6 +40,7 @@ int messageCount = 0;
 
 typedef struct {
     byte wall;       // left most wall segment (0)
+    byte layer;      // first against wall (0) or second layer (1)
     byte location;   // top (1) or bottom (0)
     byte order;      // leftmost (0)
     byte bias;       // percentage (100 normal)
@@ -47,14 +50,16 @@ typedef struct {
     byte blue;
     } led_strip ;
 
-led_strip strip[4] = { { 0,1,0,100,32,0,0,0 },
-                       { 0,1,1,100,31,0,0,0 },
-                       { 0,1,2,100,30,0,0,0 },
-                       { 0,0,0,100,1,0,0,0 }
+led_strip strips[4] = { { 0,0,1,0,100,29,0,0,0 },
+                       { 0,0,1,1,100,31,0,0,0 },
+                       { 0,0,1,2,100,30,0,0,0 },
+                       { 0,0,0,0,100,1,0,0,0 }
 
 };
 
 void setup() {
+    //if (CEREAL) {
+    //}
 
   // setup/run the fast spi library
    FastSPI_LED.setLeds(NUM_LEDS);
@@ -76,10 +81,8 @@ void setup() {
    Firmata.setFirmwareVersion(0, 1);
    Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
    Firmata.begin();
+   Serial.begin(9600);
     
-
-
-
 }
 
 void loop() {
@@ -106,6 +109,9 @@ void runPattern(int patternID) {
          break;
         case PatternTypeCycle:
             channel_cycle();
+            break;
+        case PatternTypeTopBottomFade:
+            TopBottomFade(32, 200, 0, 0, 31, 0, 31, 0, 32, 0, 16, 0, 15, 32);
             break;
    }
 }
@@ -187,8 +193,52 @@ void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int bl
    }
 }
 
+
+void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blueTop1, int redTop2, int greenTop2, int blueTop2, int redBottom1, int greenBottom1, int blueBottom1, int redBottom2, int greenBottom2, int blueBottom2) {
+
+    int numStrips = sizeof(strips)/sizeof(led_strip);
+    Serial.println("numStrips: \t");
+    Serial.println(numStrips);
+    Serial.println("\n");
+    for (int fadeindex = 0; fadeindex < steps+1; fadeindex++) {
+
+        int newRedTop = (redTop1 * (steps - fadeindex) + redTop2 * fadeindex)/steps;
+        int newGreenTop = (greenTop1 * (steps - fadeindex) + greenTop2 * fadeindex)/steps;
+        int newBlueTop = (blueTop1 * (steps - fadeindex) + blueTop2 * fadeindex)/steps;
+
+        int newRedBottom = (redBottom1 * (steps - fadeindex) + redBottom2 * fadeindex)/steps;
+        int newGreenBottom = (greenBottom1 * (steps - fadeindex) + greenBottom2 * fadeindex)/steps;
+        int newBlueBottom = (blueBottom1 * (steps - fadeindex) + blueBottom2 * fadeindex)/steps;
+
+        unsigned int newColorTop = adjustedColor(newRedTop, newGreenTop, newBlueTop);
+        unsigned int newColorBottom = adjustedColor(newRedBottom, newGreenBottom, newBlueBottom);
+
+        //setAllChannelsToColor(newColor);
+
+        //if (CEREAL) {
+        //}
+
+        for (int stripindex = 0; stripindex < numStrips ; stripindex++) {
+       
+            int channel = strips[stripindex].channel;
+                Serial.println("channels: ");
+                Serial.println(channel);
+                Serial.println("\n");
+            if (strips[stripindex].location == 1) {
+                Display[channel] = newColorTop; 
+            } else {
+                Display[channel] = newColorBottom;
+            }
+        }
+
+        show();
+        delay(fadedelay);
+   }
+}
+
 void channel_cycle()
 {   
+
     Serial.begin(9600);
     for(int i=0; i < NUM_LEDS; i++) {
         setAllChannelsToColor(0);
