@@ -4,5 +4,6 @@ typedef enum PatternType {
     PatternTypeAnalog,
     PatternTypeFade,
     PatternTypeCycle,
-    PatternTypeTopBottomFade
+    PatternTypeTopBottomFade,
+    PatternTypeColorCycleTest
 } PatternType;

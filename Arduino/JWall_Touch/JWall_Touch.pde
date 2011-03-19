@@ -50,7 +50,7 @@ typedef struct {
     byte blue;
     } led_strip ;
 
-led_strip strips[4] = { { 0,0,1,0,100,29,0,0,0 },
+led_strip strips[4] = { { 0,0,1,0,100,2,0,0,0 },
                        { 0,0,1,1,100,31,0,0,0 },
                        { 0,0,1,2,100,30,0,0,0 },
                        { 0,0,0,0,100,1,0,0,0 }
@@ -111,8 +111,10 @@ void runPattern(int patternID) {
             channel_cycle();
             break;
         case PatternTypeTopBottomFade:
-            TopBottomFade(32, 200, 0, 0, 31, 0, 31, 0, 32, 0, 16, 0, 15, 32);
+            TopBottomFade(32, 200, 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 32);
             break;
+        case PatternTypeColorCycleTest:
+            ColorCycleTest();
    }
 }
 
@@ -157,6 +159,9 @@ void show()
    FastSPI_LED.show();
 }
 
+void ColorCycleTest() {
+
+}
 
 // Create a 15 bit color value from R,G,B
 unsigned int Color(byte r, byte g, byte b)
@@ -197,9 +202,7 @@ void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int bl
 void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blueTop1, int redTop2, int greenTop2, int blueTop2, int redBottom1, int greenBottom1, int blueBottom1, int redBottom2, int greenBottom2, int blueBottom2) {
 
     int numStrips = sizeof(strips)/sizeof(led_strip);
-    Serial.println("numStrips: \t");
-    Serial.println(numStrips);
-    Serial.println("\n");
+
     for (int fadeindex = 0; fadeindex < steps+1; fadeindex++) {
 
         int newRedTop = (redTop1 * (steps - fadeindex) + redTop2 * fadeindex)/steps;
@@ -213,13 +216,7 @@ void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blu
         unsigned int newColorTop = adjustedColor(newRedTop, newGreenTop, newBlueTop);
         unsigned int newColorBottom = adjustedColor(newRedBottom, newGreenBottom, newBlueBottom);
 
-        //setAllChannelsToColor(newColor);
-
-        //if (CEREAL) {
-        //}
-
         for (int stripindex = 0; stripindex < numStrips ; stripindex++) {
-       
             int channel = strips[stripindex].channel;
                 Serial.println("channels: ");
                 Serial.println(channel);
