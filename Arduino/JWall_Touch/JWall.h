@@ -1,9 +1,9 @@
 
 
-typedef enum PatternType {
+typedef enum PatternTypes {
     PatternTypeAnalog,
     PatternTypeFade,
     PatternTypeCycle,
     PatternTypeTopBottomFade,
     PatternTypeColorCycleTest
-} PatternType;
+} PatternTypes;
