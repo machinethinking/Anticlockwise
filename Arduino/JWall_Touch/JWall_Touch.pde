@@ -62,10 +62,10 @@ typedef struct {
     byte blue;
     } led_strip ;
 
-led_strip strips[4] = { { 0,0,1,0,100,2,0,0,0 },
-                       { 0,0,1,1,100,31,0,0,0 },
-                       { 0,0,1,2,100,30,0,0,0 },
-                       { 0,0,0,0,100,1,0,0,0 }
+led_strip strips[4] = { { 0,0,1,0,100,3,0,0,0 },
+                       { 0,0,1,1,100,2,0,0,0 },
+                       { 0,0,1,2,100,5,0,0,0 },
+                       { 0,0,0,0,100,6,0,0,0 }
                        };
 
 void setup() {
@@ -289,6 +289,7 @@ void channel_cycle()
         unsigned int color = adjustedColor(255,255,255);
         Display[i] = color;
         show();
+        Serial.println(i);
         wdelay(2000);
     }
 }
