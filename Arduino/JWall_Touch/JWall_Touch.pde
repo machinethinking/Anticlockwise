@@ -47,7 +47,11 @@ int bias_index = 4;
 
 const int BlackButtonPin = 2;
 const int RedButtonPin = 3;
-int buttonState = 0;
+int buttonState = LOW;
+int lastButtonState = LOW; 
+int reading;
+long lastDebounceTime = 0; 
+long debounceDelay = 50; 
 int messageCount = 0;
 
 typedef struct {
@@ -157,7 +161,6 @@ void analogWriteCallback(byte pin, int value)
 
 void wdelay(int wdelay)
 {
-
     for (int i=0; i < wdelay ; i++) {
         checkButton();
         delay (1);
@@ -223,18 +226,26 @@ void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int bl
 
 void checkButton() {
 
-        buttonState = digitalRead(RedButtonPin);
-        if (buttonState == HIGH) {    
-            Serial.println("button!!");
-            patternTypeIndex--;
-            currPatternType = patternType[patternTypeIndex];
-            Serial.println(currPatternType);
-            loop();
-        } 
-        if (patternTypeIndex < 0 ) {
-           patternTypeIndex = maxPatternIndex;
-        }
-
+    
+    //buttonState = digitalRead(RedButtonPin);
+    reading = digitalRead(RedbuttonPin);
+    if (reading != lastButtonState) {
+        lastDebounceTime = millis();
+    } 
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+        buttonState = reading;
+    }
+    if (buttonState == HIGH) {    
+        Serial.println("button!!");
+        patternTypeIndex--;
+        currPatternType = patternType[patternTypeIndex];
+        Serial.println(currPatternType);
+        loop();
+    } 
+    if (patternTypeIndex < 0 ) {
+       patternTypeIndex = maxPatternIndex;
+    }
+    lastButtonState = reading;
 
 }
 
