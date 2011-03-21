@@ -1,0 +1,3 @@
+INDEX VERSION 1.126+/Users/vespa/Code/Anticlockwise/Android/.metadata/.plugins/org.eclipse.jdt.core
+3360336829.index
+2502809437.index
