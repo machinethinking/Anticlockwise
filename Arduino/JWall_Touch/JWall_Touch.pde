@@ -27,15 +27,17 @@
 
 unsigned int Display[NUM_LEDS];  
 byte analogPin;
-//PatternType currPatternType = PatternTypeTopBottomFade;
-//PatternType currPatternType = PatternTypeCycle;
 
 unsigned int currColor;
 
-PatternTypes patternType [3] = {PatternTypeTopBottomFade,
-                  PatternTypeCycle,
-                    PatternTypeFade
+PatternTypes patternType [3] = {
+                PatternTypeTopBottomFade,
+                PatternTypeCycle,
+                PatternTypeFade
                  };
+//PatternTypes patternType [1] = { PatternTypeFade };
+//PatternType currPatternType = PatternTypeTopBottomFade;
+//PatternType currPatternType = PatternTypeCycle;
 int maxPatternIndex = sizeof(patternType)/sizeof(PatternTypes);
 int patternTypeIndex = 0;
 char currPatternType;
@@ -93,19 +95,14 @@ void setup() {
    Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
    Firmata.begin();
    Serial.begin(9600);
+   pinMode(RedButtonPin, INPUT);
     
 }
 
 void loop() {
 
-   while(Firmata.available()) {
-      Firmata.processInput();
-   }
-
-   Firmata.sendAnalog(0, messageCount);
-   
     currPatternType = patternType[patternTypeIndex];
-   runPattern(currPatternType);
+    runPattern(currPatternType);
     
 }
 
@@ -116,9 +113,9 @@ void runPattern(int patternID) {
           show();
           break;  
       case PatternTypeFade:
-         FadeLED(1, 32, 100, 0, 31, 0, 31, 0, 0);
-         FadeLED(1, 32, 100, 31, 0, 0, 0, 0, 31);
-         FadeLED(1, 32, 100, 0, 0, 31, 0, 31, 0);
+         FadeLED(1, 32, 1000, 0, 31, 0, 31, 0, 0);
+         FadeLED(1, 32, 1000, 31, 0, 0, 0, 0, 31);
+         FadeLED(1, 32, 1000, 0, 0, 31, 0, 31, 0);
          break;
         case PatternTypeCycle:
             channel_cycle();
@@ -133,36 +130,15 @@ void runPattern(int patternID) {
 
 
 // ****************************************************************************
-// Firmata Control
-// ****************************************************************************
-
-void analogWriteCallback(byte pin, int value)
-{
-   messageCount++;
-   //if (pin == 3) {
-      //currPatternType = (PatternType)value;      
-   //} else if (pin == 2) {
-      currRed = value;
-   //}
-
-
-    //pinMode(pin,OUTPUT);
-    //analogWrite(pin, value);
-}
-
-
-// ****************************************************************************
 // LED Control Functions 
 // ****************************************************************************
 
 void wdelay(int wdelay)
 {
-
     for (int i=0; i < wdelay ; i++) {
         checkButton();
         delay (1);
     }
-
 }
 
 void show()
@@ -234,8 +210,6 @@ void checkButton() {
         if (patternTypeIndex < 0 ) {
            patternTypeIndex = maxPatternIndex;
         }
-
-
 }
 
 void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blueTop1, int redTop2, int greenTop2, int blueTop2, int redBottom1, int greenBottom1, int blueBottom1, int redBottom2, int greenBottom2, int blueBottom2) {
