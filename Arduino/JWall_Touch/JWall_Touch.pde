@@ -18,7 +18,6 @@
 // ****************************************************************************
 
 #include <FastSPI_LED.h>
-#include <Firmata.h>
 
 #import "JWall.h"
 
@@ -27,16 +26,18 @@
 
 unsigned int Display[NUM_LEDS];  
 byte analogPin;
-//PatternType currPatternType = PatternTypeTopBottomFade;
-//PatternType currPatternType = PatternTypeCycle;
 
 unsigned int currColor;
 
-PatternTypes patternType [3] = {PatternTypeTopBottomFade,
-                  PatternTypeCycle,
-                    PatternTypeFade
+PatternTypes patternType [3] = {
+                PatternTypeTopBottomFade,
+                PatternTypeFade,
                  };
-int maxPatternIndex = sizeof(patternType)/sizeof(PatternTypes);
+// test pattern: PatternTypeCycle
+//PatternTypes patternType [1] = { PatternTypeFade };
+//PatternType currPatternType = PatternTypeTopBottomFade;
+//PatternType currPatternType = PatternTypeCycle;
+int maxPatternIndex = (sizeof(patternType)/sizeof(PatternTypes)) -1;
 int patternTypeIndex = 0;
 char currPatternType;
 int currRed;
@@ -92,24 +93,18 @@ void setup() {
    
    show();
 
-   // setup/run Firmata
-   Firmata.setFirmwareVersion(0, 1);
-   Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
-   Firmata.begin();
    Serial.begin(9600);
+   pinMode(RedButtonPin, INPUT);
     
 }
 
 void loop() {
 
-   while(Firmata.available()) {
-      Firmata.processInput();
-   }
-
-   Firmata.sendAnalog(0, messageCount);
-   
     currPatternType = patternType[patternTypeIndex];
-   runPattern(currPatternType);
+    Serial.println("patternTypeIndex: ");
+    Serial.println(patternTypeIndex);
+    checkButton();
+    runPattern(currPatternType);
     
 }
 
@@ -120,9 +115,9 @@ void runPattern(int patternID) {
           show();
           break;  
       case PatternTypeFade:
-         FadeLED(1, 32, 100, 0, 31, 0, 31, 0, 0);
-         FadeLED(1, 32, 100, 31, 0, 0, 0, 0, 31);
-         FadeLED(1, 32, 100, 0, 0, 31, 0, 31, 0);
+         FadeLED(1, 32, 1000, 0, 31, 0, 31, 0, 0);
+         FadeLED(1, 32, 1000, 31, 0, 0, 0, 0, 31);
+         FadeLED(1, 32, 1000, 0, 0, 31, 0, 31, 0);
          break;
         case PatternTypeCycle:
             channel_cycle();
@@ -137,25 +132,6 @@ void runPattern(int patternID) {
 
 
 // ****************************************************************************
-// Firmata Control
-// ****************************************************************************
-
-void analogWriteCallback(byte pin, int value)
-{
-   messageCount++;
-   //if (pin == 3) {
-      //currPatternType = (PatternType)value;      
-   //} else if (pin == 2) {
-      currRed = value;
-   //}
-
-
-    //pinMode(pin,OUTPUT);
-    //analogWrite(pin, value);
-}
-
-
-// ****************************************************************************
 // LED Control Functions 
 // ****************************************************************************
 
@@ -165,7 +141,6 @@ void wdelay(int wdelay)
         checkButton();
         delay (1);
     }
-
 }
 
 void show()
@@ -226,27 +201,27 @@ void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int bl
 
 void checkButton() {
 
-    
-    //buttonState = digitalRead(RedButtonPin);
-    reading = digitalRead(RedbuttonPin);
-    if (reading != lastButtonState) {
-        lastDebounceTime = millis();
-    } 
-    if ((millis() - lastDebounceTime) > debounceDelay) {
-        buttonState = reading;
-    }
-    if (buttonState == HIGH) {    
-        Serial.println("button!!");
-        patternTypeIndex--;
-        currPatternType = patternType[patternTypeIndex];
-        Serial.println(currPatternType);
-        loop();
-    } 
-    if (patternTypeIndex < 0 ) {
-       patternTypeIndex = maxPatternIndex;
-    }
-    lastButtonState = reading;
-
+        buttonState = digitalRead(RedButtonPin);
+        reading = digitalRead(RedbuttonPin);
+        if (reading != lastButtonState) {
+            lastDebounceTime = millis();
+        } 
+        if ((millis() - lastDebounceTime) > debounceDelay) {
+            buttonState = reading;
+        }
+        if (buttonState == HIGH) {    
+            Serial.println("button!!");
+            patternTypeIndex--;
+            currPatternType = patternType[patternTypeIndex];
+            Serial.println(currPatternType);
+            if (patternTypeIndex < 0 ) {
+                patternTypeIndex = maxPatternIndex;
+            }
+            
+            lastButtonState = reading;
+            loop();
+        } 
+        lastButtonState = reading;
 }
 
 void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blueTop1, int redTop2, int greenTop2, int blueTop2, int redBottom1, int greenBottom1, int blueBottom1, int redBottom2, int greenBottom2, int blueBottom2) {
