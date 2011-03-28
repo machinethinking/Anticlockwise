@@ -29,7 +29,7 @@ byte analogPin;
 
 unsigned int currColor;
 
-PatternTypes patternType [3] = {
+PatternTypes patternType [2] = {
                 PatternTypeTopBottomFade,
                 PatternTypeFade,
                  };
@@ -52,7 +52,7 @@ int buttonState = LOW;
 int lastButtonState = LOW; 
 int reading;
 long lastDebounceTime = 0; 
-long debounceDelay = 50; 
+long debounceDelay = 100; 
 int messageCount = 0;
 
 typedef struct {
@@ -74,28 +74,26 @@ led_strip strips[4] = { { 0,0,1,0,100,3,0,0,0 },
                        };
 
 void setup() {
-    //if (CEREAL) {
-    //}
 
-  // setup/run the fast spi library
-   FastSPI_LED.setLeds(NUM_LEDS);
-   FastSPI_LED.setChipset(CFastSPI_LED::SPI_595);
-   FastSPI_LED.setCPUPercentage(50); 
-   FastSPI_LED.init();
-   FastSPI_LED.start();
+    // setup/run the fast spi library
+    FastSPI_LED.setLeds(NUM_LEDS);
+    FastSPI_LED.setChipset(CFastSPI_LED::SPI_595);
+    FastSPI_LED.setCPUPercentage(50); 
+    FastSPI_LED.init();
+    FastSPI_LED.start();
 
-   // Turn all channels off
-   setAllChannelsToColor(adjustedColor(0,0,0));
-   currColor = adjustedColor(0,0,0);
-   int currRed = 0;
-   int currGreen = 0;
-   int currBlue = 0;
-   
-   show();
+    // Turn all channels off
+    setAllChannelsToColor(adjustedColor(0,0,0));
+    currColor = adjustedColor(0,0,0);
+    int currRed = 0;
+    int currGreen = 0;
+    int currBlue = 0;
 
-   Serial.begin(9600);
-   pinMode(RedButtonPin, INPUT);
-    
+    show();
+
+    Serial.begin(9600);
+    pinMode(RedButtonPin, INPUT);
+     
 }
 
 void loop() {
@@ -118,6 +116,8 @@ void runPattern(int patternID) {
          FadeLED(1, 32, 1000, 0, 31, 0, 31, 0, 0);
          FadeLED(1, 32, 1000, 31, 0, 0, 0, 0, 31);
          FadeLED(1, 32, 1000, 0, 0, 31, 0, 31, 0);
+         FadeLED(1, 32, 1000, 0, 31, 31, 31, 31, 31);
+         FadeLED(1, 32, 1000, 31, 31, 31, 0, 31, 0);
          break;
         case PatternTypeCycle:
             channel_cycle();
@@ -200,15 +200,10 @@ void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int bl
 }
 
 void checkButton() {
-
-        buttonState = digitalRead(RedButtonPin);
-        reading = digitalRead(RedbuttonPin);
-        if (reading != lastButtonState) {
-            lastDebounceTime = millis();
-        } 
-        if ((millis() - lastDebounceTime) > debounceDelay) {
-            buttonState = reading;
-        }
+    
+    buttonState = digitalRead(RedButtonPin);
+    if ((buttonState != lastButtonState) && (millis() - lastDebounceTime) > debounceDelay) {
+        lastDebounceTime = millis();
         if (buttonState == HIGH) {    
             Serial.println("button!!");
             patternTypeIndex--;
@@ -217,12 +212,36 @@ void checkButton() {
             if (patternTypeIndex < 0 ) {
                 patternTypeIndex = maxPatternIndex;
             }
-            
+            lastButtonState = buttonState;
+            loop();
+        } 
+    } 
+    lastButtonState = buttonState;
+}
+
+/*
+    //reading = digitalRead(RedButtonPin);
+    if (buttonState != lastButtonState) {
+        lastDebounceTime = millis();
+    } 
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+        buttonState = reading;
+        if (buttonState == HIGH) {    
+            Serial.println("button!!");
+            patternTypeIndex--;
+            currPatternType = patternType[patternTypeIndex];
+            Serial.println(currPatternType);
+            if (patternTypeIndex < 0 ) {
+                patternTypeIndex = maxPatternIndex;
+            }
             lastButtonState = reading;
             loop();
         } 
-        lastButtonState = reading;
+    }
+    lastButtonState = reading;
 }
+*/
+
 
 void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blueTop1, int redTop2, int greenTop2, int blueTop2, int redBottom1, int greenBottom1, int blueBottom1, int redBottom2, int greenBottom2, int blueBottom2) {
 
