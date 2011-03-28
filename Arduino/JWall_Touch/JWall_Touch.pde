@@ -31,13 +31,13 @@ unsigned int currColor;
 
 PatternTypes patternType [3] = {
                 PatternTypeTopBottomFade,
-                PatternTypeCycle,
-                PatternTypeFade
+                PatternTypeFade,
                  };
+// test pattern: PatternTypeCycle
 //PatternTypes patternType [1] = { PatternTypeFade };
 //PatternType currPatternType = PatternTypeTopBottomFade;
 //PatternType currPatternType = PatternTypeCycle;
-int maxPatternIndex = sizeof(patternType)/sizeof(PatternTypes);
+int maxPatternIndex = (sizeof(patternType)/sizeof(PatternTypes)) -1;
 int patternTypeIndex = 0;
 char currPatternType;
 int currRed;
@@ -97,6 +97,9 @@ void setup() {
 void loop() {
 
     currPatternType = patternType[patternTypeIndex];
+    Serial.println("patternTypeIndex: ");
+    Serial.println(patternTypeIndex);
+    checkButton();
     runPattern(currPatternType);
     
 }
@@ -200,11 +203,12 @@ void checkButton() {
             patternTypeIndex--;
             currPatternType = patternType[patternTypeIndex];
             Serial.println(currPatternType);
+            if (patternTypeIndex < 0 ) {
+                patternTypeIndex = maxPatternIndex;
+            }
+            
             loop();
         } 
-        if (patternTypeIndex < 0 ) {
-           patternTypeIndex = maxPatternIndex;
-        }
 }
 
 void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blueTop1, int redTop2, int greenTop2, int blueTop2, int redBottom1, int greenBottom1, int blueBottom1, int redBottom2, int greenBottom2, int blueBottom2) {
