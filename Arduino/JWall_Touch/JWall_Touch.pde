@@ -18,7 +18,6 @@
 // ****************************************************************************
 
 #include <FastSPI_LED.h>
-#include <Firmata.h>
 
 #import "JWall.h"
 
@@ -90,10 +89,6 @@ void setup() {
    
    show();
 
-   // setup/run Firmata
-   Firmata.setFirmwareVersion(0, 1);
-   Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
-   Firmata.begin();
    Serial.begin(9600);
    pinMode(RedButtonPin, INPUT);
     
