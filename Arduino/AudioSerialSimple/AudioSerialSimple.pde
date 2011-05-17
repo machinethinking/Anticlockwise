@@ -8,9 +8,9 @@
 
 
 #define STRING_PADDING_CHARACTER '1'
-#define TOGGLE_STRING "String"
+#define TOGGLE_STRING "Toggle"
 
-#define DEBUG_OUT_TRUE
+#define DEBUG_OUT_TRUE 
 
 #include <NewSoftSerial.h>
 
@@ -56,7 +56,7 @@ void HandleCommand(char* input, int length)
 
 	char *trimmedString = trimchar(input, STRING_PADDING_CHARACTER);
 	
-	#if DEBUG_OUT_TRUE
+	#ifdef DEBUG_OUT_TRUE
 		Serial.println(trimmedString);
 	#endif
 	

@@ -51,7 +51,11 @@ void setup()
 // process a command string
 void HandleCommand(char* input, int length)
 {
-#ifdef debugout
+//#ifdef debugout
+
+Serial.println(input);
+Serial.println(trimchar(input, '1'));
+#if false
   Serial.print(">");
   Serial.print(input);
   Serial.print("<");
@@ -69,6 +73,8 @@ void HandleCommand(char* input, int length)
   timer = timermax;
 
   int* command = (int*)input;
+  
+ 
   // check commands
   // note that the two bytes are swapped, ie 'RA' means command AR
 
@@ -127,6 +133,26 @@ void loop()
   HandleCommand(inputBuffer, inputLength);
 
 
+}
+
+char *trimchar(char *str, char chartotrim)
+{
+  char *end;
+
+  // Trim leading space
+  while(*str == chartotrim/*isspace(*str)*/) str++;
+
+  if(*str == 0)  // All spaces?
+    return str;
+
+  // Trim trailing space
+  end = str + strlen(str) - 1;
+  while(end > str && *end == chartotrim/*isspace(*end)*/) end--;
+
+  // Write new null terminator
+  *(end+1) = 0;
+
+  return str;
 }
 
 
