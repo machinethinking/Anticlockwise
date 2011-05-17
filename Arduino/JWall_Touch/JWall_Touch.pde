@@ -18,25 +18,31 @@
 // ****************************************************************************
 
 #include <FastSPI_LED.h>
-#include <Firmata.h>
 
 #import "JWall.h"
 
 #define NUM_LEDS 32
 #define CEREAL 1
 
-unsigned int Display[NUM_LEDS];  
+#define RED 0
+#define GREEN 1
+#define BLUE 2
+
+unsigned int channels[NUM_LEDS][3];
+
 byte analogPin;
+
+PatternTypes patternType [2] = {
+                PatternTypeTopBottomFade,
+                PatternTypeFade,
+                 };
+
+// test pattern: PatternTypeCycle
+//PatternTypes patternType [1] = { PatternTypeFade };
 //PatternType currPatternType = PatternTypeTopBottomFade;
 //PatternType currPatternType = PatternTypeCycle;
 
-unsigned int currColor;
-
-PatternTypes patternType [3] = {PatternTypeTopBottomFade,
-                  PatternTypeCycle,
-                    PatternTypeFade
-                 };
-int maxPatternIndex = sizeof(patternType)/sizeof(PatternTypes);
+int maxPatternIndex = (sizeof(patternType)/sizeof(PatternTypes)) -1;
 int patternTypeIndex = 0;
 char currPatternType;
 int currRed;
@@ -51,7 +57,7 @@ int buttonState = LOW;
 int lastButtonState = LOW; 
 int reading;
 long lastDebounceTime = 0; 
-long debounceDelay = 50; 
+long debounceDelay = 100; 
 int messageCount = 0;
 
 typedef struct {
@@ -73,85 +79,63 @@ led_strip strips[4] = { { 0,0,1,0,100,3,0,0,0 },
                        };
 
 void setup() {
-    //if (CEREAL) {
-    //}
 
-  // setup/run the fast spi library
-   FastSPI_LED.setLeds(NUM_LEDS);
-   FastSPI_LED.setChipset(CFastSPI_LED::SPI_595);
-   FastSPI_LED.setCPUPercentage(50); 
-   FastSPI_LED.init();
-   FastSPI_LED.start();
+    // setup/run the fast spi library
+    FastSPI_LED.setLeds(NUM_LEDS);
+    FastSPI_LED.setChipset(CFastSPI_LED::SPI_595);
+    FastSPI_LED.setCPUPercentage(50); 
+    FastSPI_LED.init();
+    FastSPI_LED.start();
 
-   // Turn all channels off
-   setAllChannelsToColor(adjustedColor(0,0,0));
-   currColor = adjustedColor(0,0,0);
-   int currRed = 0;
-   int currGreen = 0;
-   int currBlue = 0;
-   
-   show();
+    // Turn all channels off
 
-   // setup/run Firmata
-   Firmata.setFirmwareVersion(0, 1);
-   Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
-   Firmata.begin();
-   Serial.begin(9600);
-    
+    setAllChannelsToRGB(0,0,0);
+
+    int currRed = 0;
+    int currGreen = 0;
+    int currBlue = 0;
+
+    show();
+
+    Serial.begin(9600);
+    pinMode(RedButtonPin, INPUT);
+     
 }
 
 void loop() {
 
-   while(Firmata.available()) {
-      Firmata.processInput();
-   }
-
-   Firmata.sendAnalog(0, messageCount);
-   
     currPatternType = patternType[patternTypeIndex];
-   runPattern(currPatternType);
+    Serial.println("patternTypeIndex: ");
+    Serial.println(patternTypeIndex);
+    checkButton();
+    runPattern(currPatternType);
     
 }
 
 void runPattern(int patternID) {
    switch (patternID) {
       case PatternTypeAnalog:
-          setAllChannelsToColor(adjustedColor(currRed, currGreen, currBlue));
+	  setAllChannelsToRGB(currRed, currGreen, currBlue);
           show();
           break;  
       case PatternTypeFade:
-         FadeLED(1, 32, 100, 0, 31, 0, 31, 0, 0);
-         FadeLED(1, 32, 100, 31, 0, 0, 0, 0, 31);
-         FadeLED(1, 32, 100, 0, 0, 31, 0, 31, 0);
+
+         FadeLED(1, 256, 125, 0, 255, 0, 255, 0, 0);
+         FadeLED(1, 256, 125, 255, 0, 0, 0, 0, 255);
+         FadeLED(1, 256, 125, 0, 0, 255, 0, 255, 0);
+         FadeLED(1, 256, 125, 0, 255, 0, 255, 255, 255);
+         FadeLED(1, 256, 125, 255, 255, 255, 0, 255, 0);
+
          break;
         case PatternTypeCycle:
             channel_cycle();
             break;
         case PatternTypeTopBottomFade:
-            TopBottomFade(32, 200, 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 32);
+            TopBottomFade(256, 200, 0, 0, 0, 0, 0, 255, 0, 0, 0, 0, 255, 0);
             break;
         case PatternTypeColorCycleTest:
             ColorCycleTest();
    }
-}
-
-
-// ****************************************************************************
-// Firmata Control
-// ****************************************************************************
-
-void analogWriteCallback(byte pin, int value)
-{
-   messageCount++;
-   //if (pin == 3) {
-      //currPatternType = (PatternType)value;      
-   //} else if (pin == 2) {
-      currRed = value;
-   //}
-
-
-    //pinMode(pin,OUTPUT);
-    //analogWrite(pin, value);
 }
 
 
@@ -165,7 +149,6 @@ void wdelay(int wdelay)
         checkButton();
         delay (1);
     }
-
 }
 
 void show()
@@ -173,14 +156,12 @@ void show()
   // copy data from display into the rgb library's output - we need to expand it back out since 
   // the rgb library expects values from 0-255 (because it's more generically focused).
    unsigned char *pData = FastSPI_LED.getRGBData();
+
    for(int i=0; i < NUM_LEDS; i++) { 
-      int r = ((Display[i] & 0x1F) * 8) * bias[bias_index];
-      int g = (((Display[i] >> 10) & 0x1F) * 8) * bias[bias_index];
-      int b = (((Display[i] >> 5) & 0x1F) * 8) * bias[bias_index];
-        
-      *pData++ = r;
-      *pData++ = g;
-      *pData++ = b;
+
+      *pData++ = channels[i][RED];
+      *pData++ = channels[i][GREEN];
+      *pData++ = channels[i][BLUE];
    }
    FastSPI_LED.show();
 }
@@ -189,21 +170,16 @@ void ColorCycleTest() {
 
 }
 
-// Create a 15 bit color value from R,G,B
-unsigned int Color(byte r, byte g, byte b)
-{
-  //Take the lowest 5 bits of each value and append them end to end
-   return( ((unsigned int)g & 0x1F )<<10 | ((unsigned int)b & 0x1F)<<5 | (unsigned int)r & 0x1F);
-}
-
-unsigned int adjustedColor(byte r, byte g, byte b) {
-   return Color(g, b, r);
-}
-
-void setAllChannelsToColor(unsigned int color) {
+void setAllChannelsToRGB(unsigned int r, unsigned int g, unsigned int b) {
    for (int i = 0; i < NUM_LEDS; i++) {
-      Display[i] = color;
-   }
+     setChannelRGB(i, r, g, b);
+   } 
+} 
+
+void setChannelRGB(unsigned int cIndex, unsigned int r, unsigned int g, unsigned int b) {
+      channels[cIndex][RED] = r;
+      channels[cIndex][GREEN] = g;
+      channels[cIndex][BLUE] = b;
 }
 
 void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int blue1, int red2, int green2, int blue2) {
@@ -214,10 +190,9 @@ void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int bl
       int newGreen = (green1 * (steps - fadeindex) + green2 * fadeindex)/steps;
       int newBlue = (blue1 * (steps - fadeindex) + blue2 * fadeindex)/steps;
 
-      unsigned int newColor = adjustedColor(newRed, newGreen, newBlue);
-
-      //Display[channel] = newColor;
-      setAllChannelsToColor(newColor);
+  // setChannelRGB(channel, newRed, newGreen, newBlue);  // Commented out to set all channels instead....
+  setAllChannelsToRGB(newRed, newGreen, newBlue);
+  
 
       show();
       wdelay(fadedelay);
@@ -225,29 +200,48 @@ void FadeLED(int channel, int steps, int fadedelay, int red1, int green1, int bl
 }
 
 void checkButton() {
-
     
-    //buttonState = digitalRead(RedButtonPin);
-    reading = digitalRead(RedbuttonPin);
-    if (reading != lastButtonState) {
+    buttonState = digitalRead(RedButtonPin);
+    if ((buttonState != lastButtonState) && (millis() - lastDebounceTime) > debounceDelay) {
+        lastDebounceTime = millis();
+        if (buttonState == HIGH) {    
+            Serial.println("button!!");
+            patternTypeIndex--;
+            currPatternType = patternType[patternTypeIndex];
+            Serial.println(currPatternType);
+            if (patternTypeIndex < 0 ) {
+                patternTypeIndex = maxPatternIndex;
+            }
+            lastButtonState = buttonState;
+            loop();
+        } 
+    } 
+    lastButtonState = buttonState;
+}
+
+/*
+    //reading = digitalRead(RedButtonPin);
+    if (buttonState != lastButtonState) {
         lastDebounceTime = millis();
     } 
     if ((millis() - lastDebounceTime) > debounceDelay) {
         buttonState = reading;
-    }
-    if (buttonState == HIGH) {    
-        Serial.println("button!!");
-        patternTypeIndex--;
-        currPatternType = patternType[patternTypeIndex];
-        Serial.println(currPatternType);
-        loop();
-    } 
-    if (patternTypeIndex < 0 ) {
-       patternTypeIndex = maxPatternIndex;
+        if (buttonState == HIGH) {    
+            Serial.println("button!!");
+            patternTypeIndex--;
+            currPatternType = patternType[patternTypeIndex];
+            Serial.println(currPatternType);
+            if (patternTypeIndex < 0 ) {
+                patternTypeIndex = maxPatternIndex;
+            }
+            lastButtonState = reading;
+            loop();
+        } 
     }
     lastButtonState = reading;
-
 }
+*/
+
 
 void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blueTop1, int redTop2, int greenTop2, int blueTop2, int redBottom1, int greenBottom1, int blueBottom1, int redBottom2, int greenBottom2, int blueBottom2) {
 
@@ -263,15 +257,12 @@ void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blu
         int newGreenBottom = (greenBottom1 * (steps - fadeindex) + greenBottom2 * fadeindex)/steps;
         int newBlueBottom = (blueBottom1 * (steps - fadeindex) + blueBottom2 * fadeindex)/steps;
 
-        unsigned int newColorTop = adjustedColor(newRedTop, newGreenTop, newBlueTop);
-        unsigned int newColorBottom = adjustedColor(newRedBottom, newGreenBottom, newBlueBottom);
-
         for (int stripindex = 0; stripindex < numStrips ; stripindex++) {
             int channel = strips[stripindex].channel;
             if (strips[stripindex].location == 1) {
-                Display[channel] = newColorTop; 
+	        setChannelRGB(channel, newRedTop, newGreenTop, newBlueTop);
             } else {
-                Display[channel] = newColorBottom;
+	      	setChannelRGB(channel, newRedBottom, newGreenBottom, newBlueBottom);
             }
         }
 
@@ -295,10 +286,9 @@ void channel_cycle()
 {   
 
     for(int i=0; i < NUM_LEDS; i++) {
-        setAllChannelsToColor(0);
+	setAllChannelsToRGB(0, 0, 0);
         show();
-        unsigned int color = adjustedColor(255,255,255);
-        Display[i] = color;
+	setChannelRGB(i, 255, 255, 255);
         show();
         Serial.println(i);
         wdelay(2000);
