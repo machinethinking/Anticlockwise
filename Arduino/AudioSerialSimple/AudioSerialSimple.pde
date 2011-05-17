@@ -1,3 +1,10 @@
+// ----------------------------------
+// Pin Layout for small serial modem:
+// white	--> 2
+// red		--> 3 or 5 volts
+// black	--> ground
+// ----------------------------------
+
 
 #define MY_SERIAL_SPEED 4800 // arduino 2009: 4800 or lower!
 #define DEBUG_SERIAL_SPEED 4800 // arduino 2009: 4800 or lower!
