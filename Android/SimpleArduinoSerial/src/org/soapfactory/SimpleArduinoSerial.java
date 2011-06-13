@@ -29,7 +29,7 @@ public class SimpleArduinoSerial extends Activity {
           public void onClick(View v) {
             Log.d("log", "TouchMeButton touched");
             if (!AudioSerialOutMono.isPlaying()) {
-            	AudioSerialOutMono.output("1111111Toggle111\r");
+            	AudioSerialOutMono.output("_____Toggle____\r");
             	ledOn = !ledOn;
             }
             setButtonTitleFromLedOnState();

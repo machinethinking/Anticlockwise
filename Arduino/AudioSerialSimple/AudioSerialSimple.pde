@@ -14,7 +14,13 @@
 #define LED_PIN 13
 
 
-#define STRING_PADDING_CHARACTER '1'
+#define PwmPinMotorA 5
+#define PwmPinMotorB 6
+#define DirectionPinMotorA 4
+#define DirectionPinMotorB 7
+
+
+#define STRING_PADDING_CHARACTER '_'
 #define TOGGLE_STRING "Toggle"
 
 #define DEBUG_OUT_TRUE 
@@ -27,6 +33,8 @@ char charin = 80;
 char inputBuffer[BUFFER_LENGTH];
 int inputLength = 0;
 
+int speed = 128;
+
 int ledOn = 0;
 
 void setup()
@@ -37,13 +45,25 @@ void setup()
 
 #ifdef DEBUG_OUT_TRUE
   Serial.begin(DEBUG_SERIAL_SPEED);
+  Serial.println("Debugging has begun");
 #endif
+
+// motor pins must be outputs
+ pinMode(PwmPinMotorA, OUTPUT);
+ pinMode(PwmPinMotorB, OUTPUT);
+ pinMode(DirectionPinMotorA, OUTPUT);
+ pinMode(DirectionPinMotorB, OUTPUT);
 
   digitalWrite(LED_PIN, LOW);
 }
 
 void loop()
 { 
+analogWrite(PwmPinMotorB, speed);
+digitalWrite(DirectionPinMotorB, LOW);
+analogWrite(PwmPinMotorA, speed);
+digitalWrite(DirectionPinMotorA, HIGH);
+
   readSerial();  // Note, program flow will not execute past this point until LINE_END chars are read over Serial or BUFFER_LENGTH is reached
   
   HandleCommand(inputBuffer, inputLength);  
@@ -60,14 +80,27 @@ void loop()
  */
 void HandleCommand(char* input, int length)
 {
+	#ifdef DEBUG_OUT_TRUE
+			Serial.print("Orig String:  ");
+			Serial.print(input);
+			Serial.print("\n");
+		#endif
+
 
 	char *trimmedString = trimchar(input, STRING_PADDING_CHARACTER);
+	
 	
 	#ifdef DEBUG_OUT_TRUE
 		Serial.println(trimmedString);
 	#endif
 	
 	if (strcmp(trimmedString, TOGGLE_STRING) == 0) {
+		
+		analogWrite(PwmPinMotorB, speed);
+	    digitalWrite(DirectionPinMotorB, LOW);
+	    analogWrite(PwmPinMotorA, speed);
+	    digitalWrite(DirectionPinMotorA, HIGH);
+	
 		if (ledOn) {
 			ledOn = 0;
 		} else {
