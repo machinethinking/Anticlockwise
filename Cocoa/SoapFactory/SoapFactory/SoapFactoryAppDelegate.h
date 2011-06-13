@@ -7,15 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TSocketClient.h"
+#import "TBinaryProtocol.h"
+#import "jwall.h"
 
 @class MainViewController;
 
 @interface SoapFactoryAppDelegate : NSObject <UIApplicationDelegate> {
-
+    JWallClient *jwallClient;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 @property (nonatomic, retain) IBOutlet MainViewController *mainViewController;
+
+@property (nonatomic, retain) JWallClient *jwallClient;
 
 @end

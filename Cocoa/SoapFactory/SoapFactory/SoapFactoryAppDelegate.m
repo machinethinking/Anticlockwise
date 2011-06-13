@@ -7,7 +7,6 @@
 //
 
 #import "SoapFactoryAppDelegate.h"
-
 #import "MainViewController.h"
 
 @implementation SoapFactoryAppDelegate
@@ -16,6 +15,17 @@
 @synthesize window=_window;
 
 @synthesize mainViewController=_mainViewController;
+
+@synthesize jwallClient;
+
+- (void)dealloc
+{
+    [_window release];
+    [_mainViewController release];
+    [jwallClient release];
+    [super dealloc];
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -36,10 +46,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-     If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-     */
+    self.jwallClient = nil;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -65,11 +72,18 @@
      */
 }
 
-- (void)dealloc
-{
-    [_window release];
-    [_mainViewController release];
-    [super dealloc];
+- (JWallClient *)jwallClient {
+    if (!jwallClient) {
+        TSocketClient *transport = [[[TSocketClient alloc] initWithHostname:/*@"192.168.1.122"*/ @"10.0.2.7" /*   @"192.168.0.104" */
+                                                                      port:9092] autorelease];
+        TBinaryProtocol *protocol = [[[TBinaryProtocol alloc] initWithTransport:transport 
+                                                                    strictRead:YES 
+                                                                   strictWrite:YES] autorelease];
+        
+        // Use the service defined in profile.thrift
+        jwallClient = [[JWallClient alloc] initWithProtocol:protocol];
+    }
+    return jwallClient;
 }
 
 @end

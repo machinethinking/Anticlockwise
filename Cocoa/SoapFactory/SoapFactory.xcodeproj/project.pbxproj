@@ -18,6 +18,9 @@
 		BB20641E13A5D7A6008BAD21 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20641D13A5D7A6008BAD21 /* MainView.xib */; };
 		BB20642113A5D7A6008BAD21 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB20642013A5D7A6008BAD21 /* FlipsideViewController.m */; };
 		BB20642313A5D7A6008BAD21 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20642213A5D7A6008BAD21 /* FlipsideView.xib */; };
+		BB70E6BB13A5DC3F00C29716 /* generate.sh in Resources */ = {isa = PBXBuildFile; fileRef = BB70E6BA13A5DC3F00C29716 /* generate.sh */; };
+		BB70E6BE13A5DC9B00C29716 /* jwall.m in Sources */ = {isa = PBXBuildFile; fileRef = BB70E6BD13A5DC9B00C29716 /* jwall.m */; };
+		BB70E6D413A5E04F00C29716 /* libThriftTouchStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB70E6D313A5E04F00C29716 /* libThriftTouchStaticLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,10 @@
 		BB20641F13A5D7A6008BAD21 /* FlipsideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlipsideViewController.h; sourceTree = "<group>"; };
 		BB20642013A5D7A6008BAD21 /* FlipsideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
 		BB20642213A5D7A6008BAD21 /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
+		BB70E6BA13A5DC3F00C29716 /* generate.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = generate.sh; sourceTree = "<group>"; };
+		BB70E6BC13A5DC9B00C29716 /* jwall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jwall.h; sourceTree = "<group>"; };
+		BB70E6BD13A5DC9B00C29716 /* jwall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = jwall.m; sourceTree = "<group>"; };
+		BB70E6D313A5E04F00C29716 /* libThriftTouchStaticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libThriftTouchStaticLibrary.a; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB70E6D413A5E04F00C29716 /* libThriftTouchStaticLibrary.a in Frameworks */,
 				BB20640613A5D7A6008BAD21 /* UIKit.framework in Frameworks */,
 				BB20640813A5D7A6008BAD21 /* Foundation.framework in Frameworks */,
 				BB20640A13A5D7A6008BAD21 /* CoreGraphics.framework in Frameworks */,
@@ -57,6 +65,7 @@
 		BB2063F613A5D7A6008BAD21 = {
 			isa = PBXGroup;
 			children = (
+				BB70E6D313A5E04F00C29716 /* libThriftTouchStaticLibrary.a */,
 				BB20640B13A5D7A6008BAD21 /* SoapFactory */,
 				BB20640413A5D7A6008BAD21 /* Frameworks */,
 				BB20640213A5D7A6008BAD21 /* Products */,
@@ -84,6 +93,7 @@
 		BB20640B13A5D7A6008BAD21 /* SoapFactory */ = {
 			isa = PBXGroup;
 			children = (
+				BB70E6B913A5DC3F00C29716 /* Generated */,
 				BB20641413A5D7A6008BAD21 /* SoapFactoryAppDelegate.h */,
 				BB20641513A5D7A6008BAD21 /* SoapFactoryAppDelegate.m */,
 				BB20641713A5D7A6008BAD21 /* MainWindow.xib */,
@@ -107,6 +117,16 @@
 				BB20641213A5D7A6008BAD21 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BB70E6B913A5DC3F00C29716 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				BB70E6BC13A5DC9B00C29716 /* jwall.h */,
+				BB70E6BD13A5DC9B00C29716 /* jwall.m */,
+				BB70E6BA13A5DC3F00C29716 /* generate.sh */,
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +183,7 @@
 				BB20641913A5D7A6008BAD21 /* MainWindow.xib in Resources */,
 				BB20641E13A5D7A6008BAD21 /* MainView.xib in Resources */,
 				BB20642313A5D7A6008BAD21 /* FlipsideView.xib in Resources */,
+				BB70E6BB13A5DC3F00C29716 /* generate.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +198,7 @@
 				BB20641613A5D7A6008BAD21 /* SoapFactoryAppDelegate.m in Sources */,
 				BB20641C13A5D7A6008BAD21 /* MainViewController.m in Sources */,
 				BB20642113A5D7A6008BAD21 /* FlipsideViewController.m in Sources */,
+				BB70E6BE13A5DC9B00C29716 /* jwall.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,7 +236,9 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../thrift_lib/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../thrift_lib\"/**";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -228,7 +252,9 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../thrift_lib/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../thrift_lib\"/**";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};
@@ -243,6 +269,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SoapFactory/SoapFactory-Prefix.pch";
 				INFOPLIST_FILE = "SoapFactory/SoapFactory-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -256,6 +287,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SoapFactory/SoapFactory-Prefix.pch";
 				INFOPLIST_FILE = "SoapFactory/SoapFactory-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -281,6 +317,7 @@
 				BB20642813A5D7A6008BAD21 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
