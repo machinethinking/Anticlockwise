@@ -23,6 +23,9 @@
 @interface TSocketClient : TNSStreamTransport {
 }
 
+@property (nonatomic, readonly) NSStreamStatus inputStreamStatus;
+@property (nonatomic, readonly) NSStreamStatus outputStreamStatus;
+
 - (id) initWithHostname: (NSString *) hostname
                    port: (int) port;
 

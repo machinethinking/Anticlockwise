@@ -56,6 +56,14 @@
 	return self;
 }
 
+- (NSStreamStatus) inputStreamStatus {
+    return self.mInput.streamStatus;
+}
+
+- (NSStreamStatus) outputStreamStatus {
+    return self.mOutput.streamStatus;
+}
+
 
 @end
 

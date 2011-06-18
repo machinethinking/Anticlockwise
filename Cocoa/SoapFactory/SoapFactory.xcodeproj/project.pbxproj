@@ -18,6 +18,7 @@
 		BB20641E13A5D7A6008BAD21 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20641D13A5D7A6008BAD21 /* MainView.xib */; };
 		BB20642113A5D7A6008BAD21 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB20642013A5D7A6008BAD21 /* FlipsideViewController.m */; };
 		BB20642313A5D7A6008BAD21 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20642213A5D7A6008BAD21 /* FlipsideView.xib */; };
+		BB30F67213AD127F009C6901 /* JWallConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = BB30F67113AD127F009C6901 /* JWallConfig.m */; };
 		BB70E6BB13A5DC3F00C29716 /* generate.sh in Resources */ = {isa = PBXBuildFile; fileRef = BB70E6BA13A5DC3F00C29716 /* generate.sh */; };
 		BB70E6BE13A5DC9B00C29716 /* jwall.m in Sources */ = {isa = PBXBuildFile; fileRef = BB70E6BD13A5DC9B00C29716 /* jwall.m */; };
 		BB70E6D413A5E04F00C29716 /* libThriftTouchStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB70E6D313A5E04F00C29716 /* libThriftTouchStaticLibrary.a */; };
@@ -41,6 +42,8 @@
 		BB20641F13A5D7A6008BAD21 /* FlipsideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlipsideViewController.h; sourceTree = "<group>"; };
 		BB20642013A5D7A6008BAD21 /* FlipsideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
 		BB20642213A5D7A6008BAD21 /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
+		BB30F67013AD127F009C6901 /* JWallConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWallConfig.h; sourceTree = "<group>"; };
+		BB30F67113AD127F009C6901 /* JWallConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWallConfig.m; sourceTree = "<group>"; };
 		BB70E6BA13A5DC3F00C29716 /* generate.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = generate.sh; sourceTree = "<group>"; };
 		BB70E6BC13A5DC9B00C29716 /* jwall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jwall.h; sourceTree = "<group>"; };
 		BB70E6BD13A5DC9B00C29716 /* jwall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = jwall.m; sourceTree = "<group>"; };
@@ -104,6 +107,8 @@
 				BB20642013A5D7A6008BAD21 /* FlipsideViewController.m */,
 				BB20642213A5D7A6008BAD21 /* FlipsideView.xib */,
 				BB20640C13A5D7A6008BAD21 /* Supporting Files */,
+				BB30F67013AD127F009C6901 /* JWallConfig.h */,
+				BB30F67113AD127F009C6901 /* JWallConfig.m */,
 			);
 			path = SoapFactory;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 				BB20641C13A5D7A6008BAD21 /* MainViewController.m in Sources */,
 				BB20642113A5D7A6008BAD21 /* FlipsideViewController.m in Sources */,
 				BB70E6BE13A5DC9B00C29716 /* jwall.m in Sources */,
+				BB30F67213AD127F009C6901 /* JWallConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,8 @@
 
 
 @implementation TNSStreamTransport
+@synthesize mInput;
+@synthesize mOutput;
 
 - (id) initWithInputStream: (NSInputStream *) input
               outputStream: (NSOutputStream *) output

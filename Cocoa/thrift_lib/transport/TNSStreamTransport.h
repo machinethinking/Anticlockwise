@@ -25,12 +25,16 @@
   NSOutputStream * mOutput;
 }
 
+@property (nonatomic, readonly) NSInputStream * mInput;
+@property (nonatomic, readonly) NSOutputStream * mOutput;
+
 - (id) initWithInputStream: (NSInputStream *) input
               outputStream: (NSOutputStream *) output;
 
 - (id) initWithInputStream: (NSInputStream *) input;
 
 - (id) initWithOutputStream: (NSOutputStream *) output;
+
 
 @end
 

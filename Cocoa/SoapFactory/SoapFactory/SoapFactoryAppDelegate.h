@@ -11,16 +11,25 @@
 #import "TBinaryProtocol.h"
 #import "jwall.h"
 
+@class JWallConfig;
+
 @class MainViewController;
 
 @interface SoapFactoryAppDelegate : NSObject <UIApplicationDelegate> {
-    JWallClient *jwallClient;
+    JWallClient *jWallClient;
+    JWallConfig *jWallConfig;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 @property (nonatomic, retain) IBOutlet MainViewController *mainViewController;
 
-@property (nonatomic, retain) JWallClient *jwallClient;
+@property (nonatomic, retain) JWallClient *jWallClient;
+
+@property (nonatomic, retain) JWallConfig *jWallConfig;
+
+
++ (SoapFactoryAppDelegate *)instance;
 
 @end
+

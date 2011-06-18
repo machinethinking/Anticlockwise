@@ -7,16 +7,45 @@
 //
 
 #import "MainViewController.h"
+#import "SoapFactoryAppDelegate.h"
+#import "jwall.h"
+
+@interface MainViewController ()
+
+@property (nonatomic, readonly) SoapFactoryAppDelegate *appDelegate;
+
+@end
 
 @implementation MainViewController
+@synthesize brightnessMinusButton;
+@synthesize brightnessPlusButton;
+@synthesize patternMinusButton;
+@synthesize patternPlusButton;
+@synthesize masterPowerButton;
 
-/*
+
+- (void)dealloc
+{
+    [brightnessMinusButton release];
+    [brightnessPlusButton release];
+    [patternMinusButton release];
+    [patternPlusButton release];
+    [masterPowerSwitch release];
+    [masterPowerButton release];
+    [super dealloc];
+}
+
+
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSLog(@"JWallClient: %@", self.appDelegate.jWallClient);
+    
 }
-*/
+
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller
 {
@@ -32,6 +61,42 @@
     [self presentModalViewController:controller animated:YES];
     
     [controller release];
+}
+
+- (IBAction)decrementBrightness:(id)sender {
+    @try {
+        [self.appDelegate.jWallClient decrementBias];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception:  %@", exception);
+    }
+}
+
+- (IBAction)incrementBrightness:(id)sender {
+    @try {
+        [self.appDelegate.jWallClient incrementBias];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception:  %@", exception);
+    }
+}
+
+- (IBAction)decrementPattern:(id)sender {
+    @try {
+        [self.appDelegate.jWallClient decrementPatternMode];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception:  %@", exception);
+    }
+}
+
+- (IBAction)incrementPattern:(id)sender {
+    @try {
+        [self.appDelegate.jWallClient incrementPatternMode];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception:  %@", exception);
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -50,15 +115,20 @@
 
 - (void)viewDidUnload
 {
+    [self setBrightnessMinusButton:nil];
+    [self setBrightnessPlusButton:nil];
+    [self setPatternMinusButton:nil];
+    [self setPatternPlusButton:nil];
+    [self setMasterPowerButton:nil];
     [super viewDidUnload];
 
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
+
+- (SoapFactoryAppDelegate *)appDelegate {
+    return [SoapFactoryAppDelegate instance];
 }
 
 @end
