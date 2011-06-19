@@ -1,0 +1,3 @@
+[submodule "3rdParty/phinominalcommon"]
+	path = 3rdParty/phinominalcommon
+	url = git@github.com:phinominal/phinominalcommon.git
