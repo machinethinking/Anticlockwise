@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_height="fill_parent" android:orientation="vertical" android:gravity="bottom">
+
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="@string/hello"
-    />
+    android:id="@+id/IP_label"/>
+
+<TextView  
+	android:id="@+id/status_label"
+    android:layout_width="fill_parent" 
+    android:text="No status..." android:layout_gravity="top" android:layout_height="match_parent" android:gravity="center|center_vertical"/>
+ 
+ 
+    
 </LinearLayout>

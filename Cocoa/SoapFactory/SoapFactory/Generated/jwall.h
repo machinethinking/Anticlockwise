@@ -12,12 +12,41 @@
 #import <TProcessor.h>
 
 
+@interface Ack : NSObject <NSCoding> {
+  int32_t __timestamp;
+  NSString * __message;
+
+  BOOL __timestamp_isset;
+  BOOL __message_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=timestamp, setter=setTimestamp:) int32_t timestamp;
+@property (nonatomic, retain, getter=message, setter=setMessage:) NSString * message;
+#endif
+
+- (id) initWithTimestamp: (int32_t) timestamp message: (NSString *) message;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int32_t) timestamp;
+- (void) setTimestamp: (int32_t) timestamp;
+- (BOOL) timestampIsSet;
+
+- (NSString *) message;
+- (void) setMessage: (NSString *) message;
+- (BOOL) messageIsSet;
+
+@end
+
 @protocol JWall <NSObject>
 - (void) incrementPatternMode;  // throws TException
 - (void) decrementPatternMode;  // throws TException
 - (void) incrementBias;  // throws TException
 - (void) decrementBias;  // throws TException
 - (void) togglePowerState;  // throws TException
+- (Ack *) testMethod: (NSString *) message;  // throws TException
 @end
 
 @interface JWallClient : NSObject <JWall> {

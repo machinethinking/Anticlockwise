@@ -54,7 +54,6 @@
 		5AAA7DB8132A00D000BFB384 /* TProtocolException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AAA7D7B132A004900BFB384 /* TProtocolException.h */; };
 		5AAA7DB9132A00D000BFB384 /* TProtocolFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AAA7D7D132A004900BFB384 /* TProtocolFactory.h */; };
 		5AAA7DBA132A00D000BFB384 /* TProtocolUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AAA7D7E132A004900BFB384 /* TProtocolUtil.h */; };
-		5AAA7DBB132A00F100BFB384 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		5AAA7DC3132A010F00BFB384 /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAA7D5E132A004900BFB384 /* TSharedProcessorFactory.m */; };
 		5AAA7DC4132A010F00BFB384 /* THTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAA7D62132A004900BFB384 /* THTTPClient.m */; };
 		5AAA7DC5132A010F00BFB384 /* TMemoryBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAA7D64132A004900BFB384 /* TMemoryBuffer.m */; };
@@ -114,6 +113,9 @@
 		5AAA7F27132A90AE00BFB384 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* ThriftCocoaLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThriftCocoaLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB30F68013AEA5F6009C6901 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BB30F68213AEA5F6009C6901 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BB30F68413AEA5F6009C6901 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BBCA95AB1384567D00C3AF8A /* CopyFramework.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = CopyFramework.py; sourceTree = "<group>"; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
@@ -123,7 +125,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5AAA7DBB132A00F100BFB384 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,7 +144,6 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* ThriftCocoaLibrary.framework */,
-				5AAA7DA5132A00A800BFB384 /* libThriftTouchStaticLibrary.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -151,11 +151,13 @@
 		0867D691FE84028FC02AAC07 /* CocoaStaticLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				5AAA7DA5132A00A800BFB384 /* libThriftTouchStaticLibrary.a */,
 				BBCA95A91384565600C3AF8A /* Scripts */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				BB30F67F13AEA5F6009C6901 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
 			name = CocoaStaticLibrary;
@@ -266,6 +268,16 @@
 				5AAA7D7F132A004900BFB384 /* TProtocolUtil.m */,
 			);
 			path = protocol;
+			sourceTree = "<group>";
+		};
+		BB30F67F13AEA5F6009C6901 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB30F68013AEA5F6009C6901 /* UIKit.framework */,
+				BB30F68213AEA5F6009C6901 /* Foundation.framework */,
+				BB30F68413AEA5F6009C6901 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		BBCA95A91384565600C3AF8A /* Scripts */ = {
@@ -382,6 +394,7 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* CocoaStaticLibrary */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
@@ -532,6 +545,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = iphoneos4.2;
@@ -545,6 +559,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PREBINDING = NO;
 				SDKROOT = iphoneos4.2;
 			};
@@ -554,11 +569,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Joost Schreve (29YT446PHD)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
 				PRODUCT_NAME = ThriftTouchStaticLibrary;
+				PROVISIONING_PROFILE = "5A9CA021-2248-43DD-A398-2A6FC8FBE265";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -567,11 +586,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Joost Schreve (29YT446PHD)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PREBINDING = NO;
 				PRODUCT_NAME = ThriftTouchStaticLibrary;
+				PROVISIONING_PROFILE = "5A9CA021-2248-43DD-A398-2A6FC8FBE265";
 				SDKROOT = iphoneos;
 				ZERO_LINK = NO;
 			};

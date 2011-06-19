@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "SoapFactoryAppDelegate.h"
 #import "jwall.h"
+#import "TSocketClient.h"
 
 @interface MainViewController ()
 
@@ -64,8 +65,14 @@
 }
 
 - (IBAction)decrementBrightness:(id)sender {
+    
+    NSLog(@"Stream status:  %d", self.appDelegate.transport.outputStreamStatus);
+    
+    
     @try {
-        [self.appDelegate.jWallClient decrementBias];
+        Ack *ack = [self.appDelegate.jWallClient testMethod:@"message from cocoa app"];
+        NSLog(@"Ack message:  %@", ack.message);
+        //[self.appDelegate.jWallClient decrementBias];
     }
     @catch (NSException *exception) {
         NSLog(@"Exception:  %@", exception);

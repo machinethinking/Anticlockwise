@@ -11,7 +11,7 @@
 #import "JWallConfig.h"
 
 @implementation SoapFactoryAppDelegate
-
+@synthesize transport;
 
 @synthesize window=_window;
 
@@ -30,6 +30,7 @@
     [_mainViewController release];
     [jWallClient release];
     [jWallConfig release];
+    [transport release];
     [super dealloc];
 }
 
@@ -80,7 +81,8 @@
 
 - (JWallClient *)jWallClient {
     if (!jWallClient) {
-        TSocketClient *transport = [[[TSocketClient alloc] initWithHostname:self.jWallConfig.jWallServerIP 
+        self.jWallConfig = [[[JWallConfig alloc] init] autorelease];
+        self.transport = [[[TSocketClient alloc] initWithHostname:self.jWallConfig.jWallServerIP 
                                                                       port:self.jWallConfig.jWallServerPort] autorelease];
         TBinaryProtocol *protocol = [[[TBinaryProtocol alloc] initWithTransport:transport 
                                                                     strictRead:YES 
@@ -88,6 +90,9 @@
         
         // Use the service defined in profile.thrift
         jWallClient = [[JWallClient alloc] initWithProtocol:protocol];
+        
+        NSLog(@"Stream status:  %d", self.transport.outputStreamStatus);
+        
     }
     return jWallClient;
 }

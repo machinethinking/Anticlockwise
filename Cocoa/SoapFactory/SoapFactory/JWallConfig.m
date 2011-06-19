@@ -15,8 +15,8 @@
 
 - (id)init {
     if ((self = [super init])) {
-        self.jWallServerIP = @"10.0.2.7";
-        self.jWallServerPort = 9092;
+        self.jWallServerIP = @"192.168.0.140";
+        self.jWallServerPort = 9090;
     }
     return self;
 }

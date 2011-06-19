@@ -19,9 +19,9 @@
 		BB20642113A5D7A6008BAD21 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB20642013A5D7A6008BAD21 /* FlipsideViewController.m */; };
 		BB20642313A5D7A6008BAD21 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20642213A5D7A6008BAD21 /* FlipsideView.xib */; };
 		BB30F67213AD127F009C6901 /* JWallConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = BB30F67113AD127F009C6901 /* JWallConfig.m */; };
+		BB30F6A213AEA687009C6901 /* libThriftTouchStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB30F6A113AEA687009C6901 /* libThriftTouchStaticLibrary.a */; };
 		BB70E6BB13A5DC3F00C29716 /* generate.sh in Resources */ = {isa = PBXBuildFile; fileRef = BB70E6BA13A5DC3F00C29716 /* generate.sh */; };
 		BB70E6BE13A5DC9B00C29716 /* jwall.m in Sources */ = {isa = PBXBuildFile; fileRef = BB70E6BD13A5DC9B00C29716 /* jwall.m */; };
-		BB70E6D413A5E04F00C29716 /* libThriftTouchStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB70E6D313A5E04F00C29716 /* libThriftTouchStaticLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,10 +44,10 @@
 		BB20642213A5D7A6008BAD21 /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
 		BB30F67013AD127F009C6901 /* JWallConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWallConfig.h; sourceTree = "<group>"; };
 		BB30F67113AD127F009C6901 /* JWallConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWallConfig.m; sourceTree = "<group>"; };
+		BB30F6A113AEA687009C6901 /* libThriftTouchStaticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libThriftTouchStaticLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB70E6BA13A5DC3F00C29716 /* generate.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = generate.sh; sourceTree = "<group>"; };
 		BB70E6BC13A5DC9B00C29716 /* jwall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jwall.h; sourceTree = "<group>"; };
 		BB70E6BD13A5DC9B00C29716 /* jwall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = jwall.m; sourceTree = "<group>"; };
-		BB70E6D313A5E04F00C29716 /* libThriftTouchStaticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libThriftTouchStaticLibrary.a; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB70E6D413A5E04F00C29716 /* libThriftTouchStaticLibrary.a in Frameworks */,
+				BB30F6A213AEA687009C6901 /* libThriftTouchStaticLibrary.a in Frameworks */,
 				BB20640613A5D7A6008BAD21 /* UIKit.framework in Frameworks */,
 				BB20640813A5D7A6008BAD21 /* Foundation.framework in Frameworks */,
 				BB20640A13A5D7A6008BAD21 /* CoreGraphics.framework in Frameworks */,
@@ -68,7 +68,6 @@
 		BB2063F613A5D7A6008BAD21 = {
 			isa = PBXGroup;
 			children = (
-				BB70E6D313A5E04F00C29716 /* libThriftTouchStaticLibrary.a */,
 				BB20640B13A5D7A6008BAD21 /* SoapFactory */,
 				BB20640413A5D7A6008BAD21 /* Frameworks */,
 				BB20640213A5D7A6008BAD21 /* Products */,
@@ -86,6 +85,7 @@
 		BB20640413A5D7A6008BAD21 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BB30F6A113AEA687009C6901 /* libThriftTouchStaticLibrary.a */,
 				BB20640513A5D7A6008BAD21 /* UIKit.framework */,
 				BB20640713A5D7A6008BAD21 /* Foundation.framework */,
 				BB20640913A5D7A6008BAD21 /* CoreGraphics.framework */,
@@ -270,17 +270,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Joost Schreve (29YT446PHD)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SoapFactory/SoapFactory-Prefix.pch";
 				INFOPLIST_FILE = "SoapFactory/SoapFactory-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "5A9CA021-2248-43DD-A398-2A6FC8FBE265";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -289,16 +292,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Joost Schreve (29YT446PHD)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SoapFactory/SoapFactory-Prefix.pch";
 				INFOPLIST_FILE = "SoapFactory/SoapFactory-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "5A9CA021-2248-43DD-A398-2A6FC8FBE265";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
