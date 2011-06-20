@@ -70,9 +70,8 @@
     
     
     @try {
-        Ack *ack = [self.appDelegate.jWallClient testMethod:@"message from cocoa app"];
-        NSLog(@"Ack message:  %@", ack.message);
-        //[self.appDelegate.jWallClient decrementBias];
+        
+        [self.appDelegate.jWallClient decrementBias];
     }
     @catch (NSException *exception) {
         NSLog(@"Exception:  %@", exception);
@@ -104,6 +103,16 @@
     @catch (NSException *exception) {
         NSLog(@"Exception:  %@", exception);
     }
+}
+
+- (IBAction)togglePower:(id)sender {
+    @try {
+        [self.appDelegate.jWallClient togglePowerState];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception:  %@", exception);
+    }
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

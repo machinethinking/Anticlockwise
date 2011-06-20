@@ -2,12 +2,18 @@
 namespace java org.anticlockwise.jwall.generated
 
 
+struct Ack {
+       1: optional i32 timestamp;
+       2: optional string message;
+}
+
 service JWall {
 	oneway void incrementPatternMode();
 	oneway void decrementPatternMode();
 	oneway void incrementBias();
 	oneway void decrementBias();
 	oneway void togglePowerState();
+	Ack testMethod(1: string message);
 }
 
 

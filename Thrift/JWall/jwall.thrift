@@ -8,12 +8,11 @@ struct Ack {
 }
 
 service JWall {
-	oneway void incrementPatternMode();
-	oneway void decrementPatternMode();
-	oneway void incrementBias();
-	oneway void decrementBias();
-	oneway void togglePowerState();
-	Ack testMethod(1: string message);
+	Ack incrementPatternMode();
+	Ack decrementPatternMode();
+	Ack incrementBias();
+	Ack decrementBias();
+	Ack togglePowerState();
 }
 
 

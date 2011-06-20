@@ -41,12 +41,11 @@
 @end
 
 @protocol JWall <NSObject>
-- (void) incrementPatternMode;  // throws TException
-- (void) decrementPatternMode;  // throws TException
-- (void) incrementBias;  // throws TException
-- (void) decrementBias;  // throws TException
-- (void) togglePowerState;  // throws TException
-- (Ack *) testMethod: (NSString *) message;  // throws TException
+- (Ack *) incrementPatternMode;  // throws TException
+- (Ack *) decrementPatternMode;  // throws TException
+- (Ack *) incrementBias;  // throws TException
+- (Ack *) decrementBias;  // throws TException
+- (Ack *) togglePowerState;  // throws TException
 @end
 
 @interface JWallClient : NSObject <JWall> {

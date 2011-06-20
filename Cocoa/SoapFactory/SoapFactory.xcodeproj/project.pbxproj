@@ -20,6 +20,7 @@
 		BB20642313A5D7A6008BAD21 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20642213A5D7A6008BAD21 /* FlipsideView.xib */; };
 		BB30F67213AD127F009C6901 /* JWallConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = BB30F67113AD127F009C6901 /* JWallConfig.m */; };
 		BB30F6A213AEA687009C6901 /* libThriftTouchStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB30F6A113AEA687009C6901 /* libThriftTouchStaticLibrary.a */; };
+		BB30F6AE13AEF411009C6901 /* power_button_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = BB30F6AD13AEF411009C6901 /* power_button_icon.png */; };
 		BB70E6BB13A5DC3F00C29716 /* generate.sh in Resources */ = {isa = PBXBuildFile; fileRef = BB70E6BA13A5DC3F00C29716 /* generate.sh */; };
 		BB70E6BE13A5DC9B00C29716 /* jwall.m in Sources */ = {isa = PBXBuildFile; fileRef = BB70E6BD13A5DC9B00C29716 /* jwall.m */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		BB30F67013AD127F009C6901 /* JWallConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWallConfig.h; sourceTree = "<group>"; };
 		BB30F67113AD127F009C6901 /* JWallConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWallConfig.m; sourceTree = "<group>"; };
 		BB30F6A113AEA687009C6901 /* libThriftTouchStaticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libThriftTouchStaticLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB30F6AD13AEF411009C6901 /* power_button_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = power_button_icon.png; sourceTree = "<group>"; };
 		BB70E6BA13A5DC3F00C29716 /* generate.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = generate.sh; sourceTree = "<group>"; };
 		BB70E6BC13A5DC9B00C29716 /* jwall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jwall.h; sourceTree = "<group>"; };
 		BB70E6BD13A5DC9B00C29716 /* jwall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = jwall.m; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				BB20641F13A5D7A6008BAD21 /* FlipsideViewController.h */,
 				BB20642013A5D7A6008BAD21 /* FlipsideViewController.m */,
 				BB20642213A5D7A6008BAD21 /* FlipsideView.xib */,
+				BB30F6AD13AEF411009C6901 /* power_button_icon.png */,
 				BB20640C13A5D7A6008BAD21 /* Supporting Files */,
 				BB30F67013AD127F009C6901 /* JWallConfig.h */,
 				BB30F67113AD127F009C6901 /* JWallConfig.m */,
@@ -189,6 +192,7 @@
 				BB20641E13A5D7A6008BAD21 /* MainView.xib in Resources */,
 				BB20642313A5D7A6008BAD21 /* FlipsideView.xib in Resources */,
 				BB70E6BB13A5DC3F00C29716 /* generate.sh in Resources */,
+				BB30F6AE13AEF411009C6901 /* power_button_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

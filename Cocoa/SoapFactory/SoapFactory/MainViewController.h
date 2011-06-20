@@ -31,6 +31,7 @@
 - (IBAction)incrementBrightness:(id)sender;
 - (IBAction)decrementPattern:(id)sender;
 - (IBAction)incrementPattern:(id)sender;
+- (IBAction)togglePower:(id)sender;
 
 
 @end
