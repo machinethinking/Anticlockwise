@@ -10,10 +10,13 @@
 #import "SoapFactoryAppDelegate.h"
 #import "jwall.h"
 #import "TSocketClient.h"
+#import "JWallConfig.h"
 
 @interface MainViewController ()
 
 @property (nonatomic, readonly) SoapFactoryAppDelegate *appDelegate;
+
+- (void)dealWithException:(NSException *)exception;
 
 @end
 
@@ -48,8 +51,24 @@
 }
 
 
-- (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller
+- (void)flipsideViewControllerDidSave:(FlipsideViewController *)controller
 {
+    self.appDelegate.jWallConfig.jWallServerIP = controller.ipTextField.text;
+    self.appDelegate.jWallConfig.jWallServerPort = [controller.portTextField.text intValue];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:controller.ipTextField.text forKey:IP_ADDRESS_KEY];
+    [userDefaults setInteger:[controller.portTextField.text intValue] forKey:PORT_KEY];
+    [userDefaults synchronize];
+    
+    [self dismissModalViewControllerAnimated:YES];
+    self.appDelegate.jWallClient = nil;
+    
+    
+    NSLog(@"creating a new JWallClient:  %@", self.appDelegate.jWallClient);
+}
+
+- (void)flipsideViewControllerDidCancel:(FlipsideViewController *)controller {
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -75,6 +94,7 @@
     }
     @catch (NSException *exception) {
         NSLog(@"Exception:  %@", exception);
+        [self dealWithException:exception];
     }
 }
 
@@ -84,6 +104,7 @@
     }
     @catch (NSException *exception) {
         NSLog(@"Exception:  %@", exception);
+        [self dealWithException:exception];
     }
 }
 
@@ -93,6 +114,7 @@
     }
     @catch (NSException *exception) {
         NSLog(@"Exception:  %@", exception);
+        [self dealWithException:exception];
     }
 }
 
@@ -102,6 +124,7 @@
     }
     @catch (NSException *exception) {
         NSLog(@"Exception:  %@", exception);
+        [self dealWithException:exception];
     }
 }
 
@@ -111,6 +134,7 @@
     }
     @catch (NSException *exception) {
         NSLog(@"Exception:  %@", exception);
+        [self dealWithException:exception];
     }
 
 }
@@ -145,6 +169,11 @@
 
 - (SoapFactoryAppDelegate *)appDelegate {
     return [SoapFactoryAppDelegate instance];
+}
+
+- (void)dealWithException:(NSException *)exception {
+    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Error" message:[exception description] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil] autorelease];
+    [alertView show];
 }
 
 @end

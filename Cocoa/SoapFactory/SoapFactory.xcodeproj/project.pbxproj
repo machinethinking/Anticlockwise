@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB10D5B413AEF9BA00C25245 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB10D5B313AEF9BA00C25245 /* QuartzCore.framework */; };
 		BB20640613A5D7A6008BAD21 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB20640513A5D7A6008BAD21 /* UIKit.framework */; };
 		BB20640813A5D7A6008BAD21 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB20640713A5D7A6008BAD21 /* Foundation.framework */; };
 		BB20640A13A5D7A6008BAD21 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB20640913A5D7A6008BAD21 /* CoreGraphics.framework */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB10D5B313AEF9BA00C25245 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BB20640113A5D7A6008BAD21 /* SoapFactory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoapFactory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB20640513A5D7A6008BAD21 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BB20640713A5D7A6008BAD21 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -57,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB10D5B413AEF9BA00C25245 /* QuartzCore.framework in Frameworks */,
 				BB30F6A213AEA687009C6901 /* libThriftTouchStaticLibrary.a in Frameworks */,
 				BB20640613A5D7A6008BAD21 /* UIKit.framework in Frameworks */,
 				BB20640813A5D7A6008BAD21 /* Foundation.framework in Frameworks */,
@@ -70,6 +73,7 @@
 		BB2063F613A5D7A6008BAD21 = {
 			isa = PBXGroup;
 			children = (
+				BB10D5B313AEF9BA00C25245 /* QuartzCore.framework */,
 				BB20640B13A5D7A6008BAD21 /* SoapFactory */,
 				BB20640413A5D7A6008BAD21 /* Frameworks */,
 				BB20640213A5D7A6008BAD21 /* Products */,

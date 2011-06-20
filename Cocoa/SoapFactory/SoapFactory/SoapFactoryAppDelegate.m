@@ -10,6 +10,8 @@
 #import "MainViewController.h"
 #import "JWallConfig.h"
 
+
+
 @implementation SoapFactoryAppDelegate
 @synthesize transport;
 
@@ -81,7 +83,6 @@
 
 - (JWallClient *)jWallClient {
     if (!jWallClient) {
-        self.jWallConfig = [[[JWallConfig alloc] init] autorelease];
         self.transport = [[[TSocketClient alloc] initWithHostname:self.jWallConfig.jWallServerIP 
                                                                       port:self.jWallConfig.jWallServerPort] autorelease];
         TBinaryProtocol *protocol = [[[TBinaryProtocol alloc] initWithTransport:transport 
@@ -95,6 +96,22 @@
         
     }
     return jWallClient;
+}
+
+- (JWallConfig *)jWallConfig {
+    if (!jWallConfig) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *ip = [userDefaults stringForKey:IP_ADDRESS_KEY];
+        int port = [userDefaults integerForKey:PORT_KEY];
+        self.jWallConfig = [[[JWallConfig alloc] init] autorelease];
+        if (ip) {
+            self.jWallConfig.jWallServerIP = ip;            
+        }
+        if (port) {
+            self.jWallConfig.jWallServerPort = port;
+        }
+    } 
+    return jWallConfig;
 }
 
 @end

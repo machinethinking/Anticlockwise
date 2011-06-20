@@ -11,6 +11,8 @@
 #import "TBinaryProtocol.h"
 #import "jwall.h"
 
+#define IP_ADDRESS_KEY @"IP_ADDRESS"
+#define PORT_KEY @"PORT"
 
 @class JWallConfig;
 
