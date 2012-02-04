@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.phinominal.common.NetworkHelper;
@@ -72,6 +75,30 @@ public class JWall extends Activity implements org.anticlockwise.jwall.generated
 	      new Thread(jwallServer).start();
     }
     
+    
+    
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.layout.menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.use_timer:
+            	getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                return true;
+            case R.id.stay_on:
+            	getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     
     public Ack incrementPatternMode() throws org.apache.thrift.TException {
     	Log.d("OUTPUT", "incrementPatternMode");

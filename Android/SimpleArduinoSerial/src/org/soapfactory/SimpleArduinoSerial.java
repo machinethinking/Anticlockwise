@@ -1,5 +1,8 @@
 package org.soapfactory;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import re.serialout.AudioSerialOutMono;
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,6 +15,8 @@ public class SimpleArduinoSerial extends Activity {
 	
 	public Button touchMeButton;
 	public boolean ledOn = false;
+	
+	private Timer debugTimer;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +36,25 @@ public class SimpleArduinoSerial extends Activity {
             if (!AudioSerialOutMono.isPlaying()) {
             	AudioSerialOutMono.output("_____Toggle____\r");
             	ledOn = !ledOn;
+            	
+            	if (ledOn) {
+                    int delay = 1000; // delay for 5 sec.
+                    int period = 100; // repeat every sec.
+                    debugTimer = new Timer();
+
+                    debugTimer.scheduleAtFixedRate(new TimerTask() {
+                   	 public void run() {
+                   		AudioSerialOutMono.output("_____Toggle____\r");
+                   		Log.d("OUTPUT", "sending toggle...");
+                   	 }
+                    }, delay, period);
+            	} else {           		
+            		debugTimer.cancel();
+            		debugTimer = null;
+            	}
+
             }
+            
             setButtonTitleFromLedOnState();
           }
         });
@@ -40,7 +63,7 @@ public class SimpleArduinoSerial extends Activity {
     
     public void setButtonTitleFromLedOnState() {
     	if (ledOn) {
-    		this.touchMeButton.setText("ON");
+    		this.touchMeButton.setText("ON");    		
     	} else {
     		this.touchMeButton.setText("OFF");
     	}
