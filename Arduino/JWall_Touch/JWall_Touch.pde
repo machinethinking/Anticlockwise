@@ -119,13 +119,12 @@ void runPattern(int patternID) {
           show();
           break;  
       case PatternTypeFade:
-
-         FadeLED(1, 256, 125, 0, 255, 0, 255, 0, 0);
-         FadeLED(1, 256, 125, 255, 0, 0, 0, 0, 255);
-         FadeLED(1, 256, 125, 0, 0, 255, 0, 255, 0);
-         FadeLED(1, 256, 125, 0, 255, 0, 255, 255, 255);
-         FadeLED(1, 256, 125, 255, 255, 255, 0, 255, 0);
-
+			Serial.println("About to start 1st fade...");
+         FadeLED(1, 256, 10, 0, 255, 0, 255, 0, 0);
+		Serial.println("About to start 2nd fade");
+         FadeLED(1, 256, 10, 255, 0, 0, 0, 0, 255);
+		Serial.println("About to start 3rd fade");
+         FadeLED(1, 256, 10, 0, 0, 255, 0, 255, 0);
          break;
         case PatternTypeCycle:
             channel_cycle();
