@@ -51,7 +51,7 @@ int currBlue;
 float bias [5] = { 0, .25, .50, .75, 1 };
 int bias_index = 4;
 
-const int BlackButtonPin = 2;
+const int BlackButtonPin = 4;
 const int RedButtonPin = 3;
 int buttonState = LOW;
 int lastButtonState = LOW; 
@@ -78,7 +78,66 @@ led_strip strips[4] = { { 0,0,1,0,100,3,0,0,0 },
                        { 0,0,0,0,100,6,0,0,0 }
                        };
 
+
+
+
+// ****************************************************************************
+// Serial modem declarations...
+// ****************************************************************************
+
+// ----------------------------------
+// Pin Layout for small serial modem:
+// white	--> 2
+// red		--> 3 or 5 volts
+// black	--> ground
+// ----------------------------------
+
+
+#define MY_SERIAL_SPEED 4800 // arduino 2009: 4800 or lower!
+#define DEBUG_SERIAL_SPEED 4800 // arduino 2009: 4800 or lower!
+#define BUFFER_LENGTH 16
+#define LINE_END_1 13
+#define LINE_END_2 10
+#define LED_PIN 6
+
+#define STRING_PADDING_CHARACTER '_'
+#define TOGGLE_STRING "Toggle"
+
+#define DEBUG_OUT_TRUE 
+
+#include <NewSoftSerial.h>
+
+NewSoftSerial mySerial(2, 255); // rx only
+
+char charin = 80;
+char inputBuffer[BUFFER_LENGTH];
+int inputLength = 0;
+
+int speed = 128;
+
+
+int ledOn = 0;
+
+// ****************************************************************************
+// ****************************************************************************
+
+
+bool commandExists = false;
+
+
+
+
 void setup() {
+
+	// Setup serial...
+ 	Serial.begin(4800);
+	mySerial.begin(MY_SERIAL_SPEED); 
+
+
+	// Setup LED Pin
+	pinMode(LED_PIN, OUTPUT);
+	digitalWrite(LED_PIN, LOW);
+
 
     // setup/run the fast spi library
     FastSPI_LED.setLeds(NUM_LEDS);
@@ -97,9 +156,9 @@ void setup() {
 
     show();
 
-    Serial.begin(9600);
+
     pinMode(RedButtonPin, INPUT);
-     
+
 }
 
 void loop() {
@@ -120,11 +179,11 @@ void runPattern(int patternID) {
           break;  
       case PatternTypeFade:
 			Serial.println("About to start 1st fade...");
-         FadeLED(1, 256, 10, 0, 255, 0, 255, 0, 0);
+         FadeLED(1, 256, 125, 0, 255, 0, 255, 0, 0);
 		Serial.println("About to start 2nd fade");
-         FadeLED(1, 256, 10, 255, 0, 0, 0, 0, 255);
+         FadeLED(1, 256, 125, 255, 0, 0, 0, 0, 255);
 		Serial.println("About to start 3rd fade");
-         FadeLED(1, 256, 10, 0, 0, 255, 0, 255, 0);
+         FadeLED(1, 256, 125, 0, 0, 255, 0, 255, 0);
          break;
         case PatternTypeCycle:
             channel_cycle();
@@ -144,6 +203,23 @@ void runPattern(int patternID) {
 
 void wdelay(int wdelay)
 {
+	readSerial(wdelay);  // Note, program flow will not execute past this point until LINE_END chars are read over Serial or BUFFER_LENGTH is reached
+	
+	if (commandExists) {
+  		HandleCommand(inputBuffer, inputLength);  	
+	}
+
+	return;
+
+/*
+  	if (ledOn == 0) {
+		digitalWrite(LED_PIN, LOW);
+	} else {
+		digitalWrite(LED_PIN, HIGH);
+	}
+*/
+
+
     for (int i=0; i < wdelay ; i++) {
         checkButton();
         delay (1);
@@ -277,6 +353,7 @@ void TopBottomFade(int steps, int fadedelay, int redTop1, int greenTop1, int blu
 
         show();
         wdelay(fadedelay);
+		Serial.println("end of fade loop iteration");
         
    }
 }
@@ -293,4 +370,109 @@ void channel_cycle()
         wdelay(2000);
     }
 }
+
+
+// ****************************************************************************
+// Serial Modem code...
+// ****************************************************************************
+
+
+/*
+ * If input string is recognized performs command, in this case toggling LED 
+ */
+void HandleCommand(char* input, int length)
+{
+	#ifdef DEBUG_OUT_TRUE
+			Serial.print("Orig String:  ");
+			Serial.print(input);
+			Serial.print("\n");
+		#endif
+
+
+	char *trimmedString = trimchar(input, STRING_PADDING_CHARACTER);
+	
+	
+	#ifdef DEBUG_OUT_TRUE
+		Serial.println(trimmedString);
+	#endif
+	
+	if (strcmp(trimmedString, TOGGLE_STRING) == 0) {
+	
+		if (ledOn) {
+			ledOn = 0;
+		} else {
+			ledOn = 1;
+		}
+	}
+}
+
+/*
+ * Waits for Serial until available and then reads it into inputBuffer
+ */
+void readSerial(int wdelay) {
+	// get a command string form the mySerial port
+	commandExists = false;
+	inputLength = 0;
+	int count = 0;
+	do {
+	
+	/*
+	  while (!mySerial.available() || count < wdelay){
+		count+=5;
+	      delay(5);
+		checkButton();
+	  }; 
+	*/
+	
+	
+	if (count > wdelay) {
+		//Serial.println("Returning from readSerial...");
+	
+		return;
+	} else {
+		count += 1;
+		delay(1);
+	}
+	
+	  // wait for input 
+	  {
+	    charin = mySerial.read(); // read it in
+
+	    if (charin > 31 && charin < 128) {
+	      inputBuffer[inputLength]=charin;
+	      inputLength++;
+	Serial.print(charin);
+	    }
+
+	  }
+	} while (charin != LINE_END_1 && charin != LINE_END_2 && inputLength < BUFFER_LENGTH);
+	inputBuffer[inputLength] = 0; //  add null terminator
+	commandExists = true;
+}
+
+/*
+ * Trims specified character from front and back of specified string 
+ */
+char *trimchar(char *str, char chartotrim)
+{
+  char *end;
+
+  // Trim leading space
+  while(*str == chartotrim) str++;
+
+  if(*str == 0)  // All spaces?
+    return str;
+
+  // Trim trailing space
+  end = str + strlen(str) - 1;
+  while(end > str && *end == chartotrim) end--;
+
+  // Write new null terminator
+  *(end+1) = 0;
+
+  return str;
+}
+
+
+
 

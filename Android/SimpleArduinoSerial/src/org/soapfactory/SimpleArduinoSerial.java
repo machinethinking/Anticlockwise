@@ -37,6 +37,7 @@ public class SimpleArduinoSerial extends Activity {
             	AudioSerialOutMono.output("_____Toggle____\r");
             	ledOn = !ledOn;
             	
+            	/*
             	if (ledOn) {
                     int delay = 1000; // delay for 5 sec.
                     int period = 100; // repeat every sec.
@@ -52,7 +53,7 @@ public class SimpleArduinoSerial extends Activity {
             		debugTimer.cancel();
             		debugTimer = null;
             	}
-
+*/
             }
             
             setButtonTitleFromLedOnState();
