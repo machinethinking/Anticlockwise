@@ -382,19 +382,14 @@ void channel_cycle()
  */
 void HandleCommand(char* input, int length)
 {
-	#ifdef DEBUG_OUT_TRUE
-			Serial.print("Orig String:  ");
-			Serial.print(input);
-			Serial.print("\n");
-		#endif
 
 
 	char *trimmedString = trimchar(input, STRING_PADDING_CHARACTER);
 	
 	
-	#ifdef DEBUG_OUT_TRUE
+	
 		Serial.println(trimmedString);
-	#endif
+	
 	
 	if (strcmp(trimmedString, TOGGLE_STRING) == 0) {
 	
@@ -441,7 +436,6 @@ void readSerial(int wdelay) {
 	    if (charin > 31 && charin < 128) {
 	      inputBuffer[inputLength]=charin;
 	      inputLength++;
-	Serial.print(charin);
 	    }
 
 	  }
